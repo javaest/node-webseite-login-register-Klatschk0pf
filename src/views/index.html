@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startseite</title>
+</head>
+<body onload="checkLoginStatus()">
+  <h1>Willkommen</h1>
+  <div id="status"></div>
+
+  <script>
+    function checkLoginStatus() {
+      fetch('/get-username')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('status').innerHTML = `
+            <p>Angemeldet als: ${data.username}</p>
+            <a href="/content">Zum Inhalt</a>
+            <form action="/logout" method="POST">
+              <button type="submit">Abmelden</button>
+            </form>`;
+        })
+        .catch(() => {
+          document.getElementById('status').innerHTML = `
+            <p>Du bist nicht angemeldet.</p>
+            <a href="/login">Anmelden</a> |
+            <a href="/register">Registrieren</a>`;
+        });
+    }
+  </script>
+</body>
+</html>
